@@ -4,7 +4,7 @@
         <form @submit.prevent="handleSubmit">
             <input type="email" placeholder="ingrese email" v-model="email">
             <input type="password" placeholder="ingrese contraseña" v-model="password">
-            <button type="submit">Crear Usuario</button>
+            <button type="submit" :disabled="userStore.loadingUser">Crear Usuario</button>
         </form>
     </div>
 </template>
@@ -12,10 +12,10 @@
 <script setup>
 import { ref } from 'vue';
 import {useUserStore} from '../stores/user';
-import {useRouter} from 'vue-router';
+// import {useRouter} from 'vue-router';
 
 const userStore=useUserStore();
-const router=useRouter();
+// const router=useRouter();
 
 const email=ref('leguigol@hotmail.com');
 const password=ref('lancelot');
@@ -28,7 +28,7 @@ const handleSubmit= async() => {
         return alert('llena los campos')
     }
     await userStore.registerUser(email.value,password.value);
-    router.push('/');
+    // router.push('/');
 }
 </script>
 
