@@ -1,7 +1,8 @@
-import { collection, getDocs, query, where,addDoc, doc, getDoc,deleteDoc } from 'firebase/firestore/lite';
+import { collection, getDocs, query, where,addDoc, doc, getDoc,deleteDoc, updateDoc } from 'firebase/firestore/lite';
 import { defineStore } from "pinia";
 import { db, auth } from '../firebaseConfig';
 import {nanoid} from 'nanoid'; 
+import router from '../router';
 
 export const useDatabaseStore=defineStore('database',{
     state: () => ({
@@ -52,13 +53,63 @@ export const useDatabaseStore=defineStore('database',{
 
             }
         },
+        async registerUser(suscrip,fecha){
+            console.log('esta es la suscrip:'+suscrip);
+            console.log('esta es la fecha que recibo:'+fecha);
+            try{
+                const objetoDoc={
+                    user: auth.currentUser.uid,
+                    forma_suscripcion: suscrip,
+                    fecha_registro: fecha
+                }
+                await addDoc(collection(db, "registro"), objetoDoc);
+                console.log('agregue registro');
+            }catch(error){
+                console.log(error);
+            }finally{
+
+            }
+        },
+
         async leerUrl(id){
             try{
                 const docRef=doc(db, "urls", id);
                 const docSpan=await getDoc(docRef);
-                return {url: docSpan.data().name}
+
+                if (!docSpan.exists()){
+                    throw new Error("no existe el doc");
+                }
+
+                if (docSpan.data().user !== auth.currentUser.uid){
+                    throw new Error("no le pertenece el documento");
+                }
+                return docSpan.data().name;
             }catch(error){
                 console.log(error);
+            }finally{
+
+            }
+        },
+        async updateUrl(id, name){
+            try{
+                const docRef=doc(db, 'urls', id);
+                const docSnap=await getDoc(docRef);
+
+                if (!docSnap.exists()){
+                    throw new Error("no existe el doc");
+                }
+
+                if (docSnap.data().user !== auth.currentUser.uid){
+                    throw new Error("no le pertenece el documento");
+                }
+
+                await updateDoc(docRef, {
+                    name: name,
+                })              
+                this.documents=this.documents.map(item => item.id === id ? ({...item, name: name}) : item);
+                router.push('/');
+            }catch(error){
+
             }finally{
 
             }

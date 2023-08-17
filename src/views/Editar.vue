@@ -3,7 +3,7 @@
         <h1>Editar id: {{route.params}}</h1>
         <form @submit.prevent="handleSubmit">
             <input type="text" placeholder="Ingrese URL" v-model="url">
-            <button type="submit">Agregar</button>
+            <button type="submit">Editar</button>
         </form>
     </div>
 </template>
@@ -22,6 +22,8 @@ console.log(route.params);
 
 const handleSubmit = () => {
     console.log('editar');
+    // validaciones del input
+    databaseStore.updateUrl(route.params.id, url.value);
 }
 
 const url=ref('');
