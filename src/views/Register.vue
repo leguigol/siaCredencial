@@ -4,6 +4,9 @@
         <form @submit.prevent="handleSubmit">
             <input type="email" placeholder="ingrese email" v-model="email">
             <input type="password" placeholder="ingrese contraseña" v-model="password">
+            <input type="text" placeholder="Nombre" v-model="nombre">
+            <input type="text" placeholder="Apellido" v-model="apellido">
+            <input type="text" placeholder="Dni" v-model="dni">
             <label for="subscription">Elige una forma de suscripción:</label>
             <select id="subscription" v-model="subscription">
                 <option value="Mensual">Mensual</option>
@@ -31,7 +34,10 @@ const databaseStore=useDatabaseStore();
 
 const email=ref('leguigol@hotmail.com');
 const password=ref('lancelot');
-const subscription=ref('');
+const nombre=ref('');
+const apellido=ref('');
+const dni=ref('');
+const subscription=ref('Mensual');
 
 const handleSubmit= async() => {
     console.log(email.value);
@@ -44,7 +50,7 @@ const handleSubmit= async() => {
 
     await userStore.registerUser(email.value,password.value);
     
-    await databaseStore.registerUser(subscription.value,new Date());
+    await databaseStore.registerUser(subscription.value,new Date(),nombre.value,apellido.value,dni.value);
 
     // router.push('/');
 }

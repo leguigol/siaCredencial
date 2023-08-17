@@ -12,13 +12,11 @@
 <script setup>
 import { ref } from 'vue';
 import {useUserStore} from '../stores/user';
-// import {useRouter} from 'vue-router';
 
 const userStore=useUserStore();
-// const router=useRouter();
 
-const email=ref('leguigol@hotmail.com');
-const password=ref('lancelot');
+const email=ref('');
+const password=ref('');
 
 const handleSubmit= async() => {
     console.log(email.value);
@@ -28,7 +26,6 @@ const handleSubmit= async() => {
         return alert('llena los campos')
     }
     await userStore.loginUser(email.value,password.value);
-    // router.push('/');
 }
 </script>
 

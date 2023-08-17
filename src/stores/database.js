@@ -7,6 +7,7 @@ import router from '../router';
 export const useDatabaseStore=defineStore('database',{
     state: () => ({
         documents: [],
+        registerData: null,
         loadingDoc: false,
     }),
     actions: {
@@ -53,24 +54,56 @@ export const useDatabaseStore=defineStore('database',{
 
             }
         },
-        async registerUser(suscrip,fecha){
+        async obtenerRegistrado(id) {
+            try {
+              const q = query(
+                    collection(db, 'registro'), 
+                    where("user","==", auth.currentUser.uid)
+              );
+              const querySnapshot=await getDocs(q);
+
+              if(!querySnapshot.empty){
+                const docS=querySnapshot.docs[0];
+                const data=docS.data();
+                // Devolver los datos de registro
+                return {
+                    forma_suscripcion: data.forma_suscripcion,
+                    fecha_registro: data.fecha_registro,
+                    nombre: data.nombre,
+                    apellido: data.apellido,
+                    dni: data.dni
+                  };
+    
+              }else{
+                console.log('no hay datos de registro');
+                return null;
+              }  
+        
+            } catch (error) {
+              console.log(error.message);
+            }
+        },        
+        async registerUser(suscrip,fecha,nom,ape,docu){
             console.log('esta es la suscrip:'+suscrip);
             console.log('esta es la fecha que recibo:'+fecha);
             try{
                 const objetoDoc={
                     user: auth.currentUser.uid,
                     forma_suscripcion: suscrip,
-                    fecha_registro: fecha
+                    fecha_registro: fecha,
+                    nombre: nom,
+                    apellido: ape,
+                    dni: docu                    
                 }
                 await addDoc(collection(db, "registro"), objetoDoc);
-                console.log('agregue registro');
+                this.registerData={ forma_suscripcion: suscrip, fecha_registro: fecha, nombre: nom, apellido: ape, dni: docu};
+                console.log('agregue registro'+this.registerData);
             }catch(error){
                 console.log(error);
             }finally{
 
             }
         },
-
         async leerUrl(id){
             try{
                 const docRef=doc(db, "urls", id);
