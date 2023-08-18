@@ -84,8 +84,6 @@ export const useDatabaseStore=defineStore('database',{
             }
         },        
         async registerUser(suscrip,fecha,nom,ape,docu){
-            console.log('esta es la suscrip:'+suscrip);
-            console.log('esta es la fecha que recibo:'+fecha);
             try{
                 const objetoDoc={
                     user: auth.currentUser.uid,
@@ -96,8 +94,7 @@ export const useDatabaseStore=defineStore('database',{
                     dni: docu                    
                 }
                 await addDoc(collection(db, "registro"), objetoDoc);
-                this.registerData={ forma_suscripcion: suscrip, fecha_registro: fecha, nombre: nom, apellido: ape, dni: docu};
-                console.log('agregue registro'+this.registerData);
+                router.push('/');
             }catch(error){
                 console.log(error);
             }finally{

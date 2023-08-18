@@ -3,12 +3,11 @@ import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPa
 import {auth, db} from '../firebaseConfig';
 import router from '../router';
 import {useDatabaseStore} from './database';
-import { query, getDoc,collection,where} from 'firebase/firestore/lite';
+import { query, getDocs,collection,where} from 'firebase/firestore/lite';
 
 export const useUserStore=defineStore('userStore',{
     state: () =>  ({
         userData: null,
-        regData: null,
         loadingUser: false,
         loadingSession: false,
     }),
@@ -31,7 +30,7 @@ export const useUserStore=defineStore('userStore',{
 
             try{
                 const {user}=await signInWithEmailAndPassword(auth,email,password);
-                this.userData={ email: user.email, uid: user.uid};
+                this.userData={ email: user.email, uid: user.uid}; 
                 router.push('/');
             }catch(error){
                 console.log(error);
