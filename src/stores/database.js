@@ -1,8 +1,9 @@
-import { collection, getDocs, query, where,addDoc, doc, getDoc,deleteDoc, updateDoc } from 'firebase/firestore/lite';
 import { defineStore } from "pinia";
+import { collection, getDocs, query, where,addDoc, doc, getDoc,deleteDoc, updateDoc } from 'firebase/firestore/lite';
 import { db, auth } from '../firebaseConfig';
 import {nanoid} from 'nanoid'; 
 import router from '../router';
+import { useUserStore } from './user';
 
 export const useDatabaseStore=defineStore('database',{
     state: () => ({
@@ -36,6 +37,7 @@ export const useDatabaseStore=defineStore('database',{
                 this.loadingDoc=false;
             }
         }, 
+ 
         async addUrl(name){
             try{
                 const objetoDoc={
@@ -54,14 +56,14 @@ export const useDatabaseStore=defineStore('database',{
 
             }
         },
-        async obtenerRegistrado(id) {
+        async obtenerRegistrado() {
             try {
               const q = query(
                     collection(db, 'registro'), 
                     where("user","==", auth.currentUser.uid)
               );
               const querySnapshot=await getDocs(q);
-
+              console.log('uid: '+auth.currentUser.uid)  
               if(!querySnapshot.empty){
                 const docS=querySnapshot.docs[0];
                 const data=docS.data();
@@ -96,7 +98,8 @@ export const useDatabaseStore=defineStore('database',{
                 await addDoc(collection(db, "registro"), objetoDoc);
                 router.push('/');
             }catch(error){
-                console.log(error);
+                console.log(error.code);
+                return(error.code);
             }finally{
 
             }

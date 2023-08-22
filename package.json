@@ -15,6 +15,8 @@
     "pinia": "^2.1.6",
     "qrcode": "^1.5.3",
     "qrcode-reader-vue3": "^3.1.2",
+    "qrcode-vue3": "^1.6.8",
+    "unplugin-vue-components": "^0.25.1",
     "vue": "^3.3.4",
     "vue-qr": "^4.0.9",
     "vue-qrcode-component": "^2.1.1",

@@ -1,55 +1,79 @@
 <template>
-  <a-form
-    :model="formState"
-    name="basic"
-    :label-col="{ span: 8 }"
-    :wrapper-col="{ span: 16 }"
-    autocomplete="off"
-    @finish="onFinish"
-    @finishFailed="onFinishFailed"
-  >
-        <a-form-item
-            label="email"
-            name="email"
-            :rules="[{ required: true, type: 'email', message: 'Por favor ingresa tu correo electronico' }]"
+    <a-row>
+        <a-col :xs="{span: 24}" :sm="{span:12, offset:6}" :style="{textAlign: 'center'}">
+            <h1>SIA CLUB</h1>
+        </a-col>    
+        <a-col :xs="{span: 24}" :sm="{span:12, offset:6}">
+            <a-form
+                :model="formState"
+                name="basicLogin"
+                autocomplete="off"
+                layout="vertical"
+                @finish="onFinish"
+                @finishFailed="onFinishFailed"
             >
-            <a-input v-model:value="formState.username" />
-        </a-form-item>
-        <a-form-item
-            label="Password"
-            name="password"
-            :rules="[{ required: true, message: 'Por favor ingresa tu contraseña!' }]"
-        >
-            <a-input-password v-model:value="formState.password" />
-        </a-form-item>
-  </a-form>
-    <!-- <div>
-        <h1>Login</h1>
-        <form @submit.prevent="handleSubmit">
-            <input type="email" placeholder="ingrese email" v-model="email">
-            <input type="password" placeholder="ingrese contraseña" v-model="password">
-            <button type="submit" :disabled="userStore.loadingUser">Acceso</button>
-        </form>
-    </div> -->
+
+                <a-form-item
+                    label="Ingresa tu correo"
+                    name="email"
+                    :rules="[{ required: true, type: 'email', message: 'Por favor ingresa tu correo electronico' }]"
+                >
+                    <a-input v-model:value="formState.email" />
+                </a-form-item>
+                <a-form-item
+                    label="Ingrese contraseña"
+                    name="password"
+                    :rules="[{ required: true, min: 6, message: 'Por favor ingresa una contraseña minimo 6 caracteres' }]"
+                >
+                    <a-input-password v-model:value="formState.password" />
+                </a-form-item>
+                <a-form-item :style="{textAlign: 'center'}">
+                    <a-button type="primary" html-type="submit" :disabled="userStore.loadingUser" :style="{ width: '50%'}">Ingresar</a-button>
+                </a-form-item>
+            </a-form>
+        
+        </a-col>
+    </a-row>
+
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { reactive } from 'vue';
 import {useUserStore} from '../stores/user';
+import { message } from 'ant-design-vue';
 
 const userStore=useUserStore();
 
-const email=ref('');
-const password=ref('');
+const formState=reactive({
+    email: '',
+    password: '',
+});
 
-const handleSubmit= async() => {
-    console.log(email.value);
-    console.log(password.value);
-    console.log('procesando formulario');
-    if(!email.value || password.value.length<6){
-        return alert('llena los campos')
+
+const onFinish=async(values) => {
+
+    const error=await userStore.loginUser(formState.email,formState.password);
+    
+    if(!error){
+        return;
     }
-    await userStore.loginUser(email.value,password.value);
-}
+
+    switch(error){
+        case 'auth/user-not-found':
+            message.error('No existe el correo electronico registrado');
+            break;
+        case 'auth/wrong-password':
+            message.error('Error de contraseña');
+            break;
+        default:
+            message.error('Error en el servidor');
+            break;    
+    }
+
+};
+const onFinishFailed= errorInfo => {
+    console.log('failed:'+errorInfo);
+};
+
 </script>
 

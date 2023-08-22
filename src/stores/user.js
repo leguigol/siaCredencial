@@ -4,6 +4,7 @@ import {auth, db} from '../firebaseConfig';
 import router from '../router';
 import {useDatabaseStore} from './database';
 import { query, getDocs,collection,where} from 'firebase/firestore/lite';
+import { message } from 'ant-design-vue';
 
 export const useUserStore=defineStore('userStore',{
     state: () =>  ({
@@ -17,10 +18,12 @@ export const useUserStore=defineStore('userStore',{
             try {
                 const {user}=await createUserWithEmailAndPassword(auth, email, password)
                 console.log(user);
-                this.userData={email: user.email, uid: user.uid};
+                // this.userData={email: user.email, uid: user.uid};
+                this.userData={email: user.email, uid: user.uid };
                 router.push('/');
             }catch (error){
                 console.log(error);
+                return(error.code);
             }finally{
                 this.loadingUser=false;
             }
@@ -33,7 +36,8 @@ export const useUserStore=defineStore('userStore',{
                 this.userData={ email: user.email, uid: user.uid}; 
                 router.push('/');
             }catch(error){
-                console.log(error);
+                console.log(error.code);            
+                return(error.code);
             }finally{
                 this.loadingUser=false;
             }
@@ -43,8 +47,8 @@ export const useUserStore=defineStore('userStore',{
             const databasestore=useDatabaseStore();
             databasestore.$reset();
             try{
-                await signOut(auth);
                 this.userData=null;
+                await signOut(auth);
                 router.push('/login');
             }catch(error){
                 console.log(error);
