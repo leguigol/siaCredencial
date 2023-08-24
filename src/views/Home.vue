@@ -3,13 +3,22 @@
         <a-col :xs="{span: 24}" :sm="{span:12, offset:6}" :style="{textAlign: 'center'}">
             <h1>SIA CLUB</h1>
         </a-col>    
-            <a-col :xs="{span: 24}" :sm="{span:12, offset:6}" :style="{textAlign: 'center'}">
-            <div v-if="datosRegistro">
-            <h2>Apellido y Nombre: {{ datosRegistro.apellido }} {{ datosRegistro.nombre }}</h2>
-            <h2>DNI: {{ datosRegistro.dni }}</h2>
-            <h3>Forma de Suscripción: {{ datosRegistro.forma_suscripcion }}</h3>
-            <p>Fecha de Registro: {{ formatearFecha(datosRegistro.fecha_registro.toDate()) }}</p>
-            </div>
+        <a-col :xs="{span: 24}" :sm="{span:12, offset:6}" :style="{textAlign: 'center'}">
+            <!-- <div v-if="datosRegistro">
+              <h2>Apellido y Nombre: {{ datosRegistro.apellido }} {{ datosRegistro.nombre }}</h2>
+              <h2>DNI: {{ datosRegistro.dni }}</h2>
+              <h3>Forma de Suscripción: {{ datosRegistro.forma_suscripcion }}</h3>
+              <p>Fecha de Registro: {{ formatearFecha(datosRegistro.fecha_registro.toDate()) }}</p>
+            </div> -->
+            <ul style="list-style: none;">
+              <li v-for="item of databaseStore.registerData" :key="item.id">
+                <h2>Apellido y Nombre: {{ item.apellido }} {{ item.nombre }}</h2>
+                <h2>DNI: {{ item.dni }}</h2>
+                <h3>Forma de Suscripción: {{ item.forma_suscripcion }}</h3>
+                <p>Fecha de Registro: {{ formatearFecha(item.fecha_registro.toDate()) }}</p>
+              </li>  
+            </ul>
+
 
             <!-- <p>{{ userStore.userData?.email }}</p> -->
             <QRCodeVue3
@@ -48,13 +57,16 @@ import { ref, onMounted } from 'vue';
 import { auth } from '../firebaseConfig';
 import QRCodeVue3 from "qrcode-vue3";
 
+
 const databaseStore=useDatabaseStore();
-const datosRegistro=ref(null);
+const datosRegistro=ref([]);
 
-onMounted( async() => {
-    datosRegistro.value=await databaseStore.obtenerRegistrado();
+databaseStore.datodelRegistrado();
 
-});
+//  onMounted( async() => {
+//     datosRegistro.value=await databaseStore.obtenerRegistrado();
+
+// });
 
 const generateLinkWithUserData = () => {
 

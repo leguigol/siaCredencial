@@ -8,7 +8,7 @@ import { useUserStore } from './user';
 export const useDatabaseStore=defineStore('database',{
     state: () => ({
         documents: [],
-        registerData: null,
+        registerData: [],
         loadingDoc: false,
     }),
     actions: {
@@ -56,8 +56,30 @@ export const useDatabaseStore=defineStore('database',{
 
             }
         },
+        async datodelRegistrado(){
+            try{
+                this.registerData=[];
+                const q = query(
+                    collection(db, 'registro'), 
+                    where("user","==", auth.currentUser.uid)
+                );
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    console.log(doc.id, " => ", doc.data());
+                    this.registerData.push({ id: doc.id,
+                        ...doc.data(),
+                    });
+                  });
+            }catch(error){
+
+            }finally{
+
+            }
+        },
         async obtenerRegistrado() {
             try {
+              this.registerData=[];
               const q = query(
                     collection(db, 'registro'), 
                     where("user","==", auth.currentUser.uid)
@@ -86,9 +108,11 @@ export const useDatabaseStore=defineStore('database',{
             }
         },        
         async registerUser(suscrip,fecha,nom,ape,docu){
+            const userStore=useUserStore();
+            const xid=userStore.userData.uid;
             try{
                 const objetoDoc={
-                    user: auth.currentUser.uid,
+                    user: xid,
                     forma_suscripcion: suscrip,
                     fecha_registro: fecha,
                     nombre: nom,
@@ -96,6 +120,7 @@ export const useDatabaseStore=defineStore('database',{
                     dni: docu                    
                 }
                 await addDoc(collection(db, "registro"), objetoDoc);
+                
                 router.push('/');
             }catch(error){
                 console.log(error.code);
