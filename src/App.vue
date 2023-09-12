@@ -52,13 +52,16 @@
 
 </template>
 <style>
+body {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+}
   @media screen and (min-width: 280px) {
   body {
     background-image: url('./assets/credencial_blanco_280x653.jpg');
-    background-position: center center;
     background-size: contain;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
   }
   .div1 {
     margin-top: 170px;
