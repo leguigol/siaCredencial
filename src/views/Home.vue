@@ -1,23 +1,22 @@
 <template>
+  <body>
+    <div class="centered-item">
+      <a-row>
+          <a-col :xs="{span: 24}" :sm="{span:24}">
+                <div v-for="item of databaseStore.registerData" :key="item.id">
+                    <h2>{{ item.apellido }} {{ item.nombre }}</h2>
+                    <h3>DNI: {{ item.dni }}</h3>
+                    <h3>Forma de Suscripción: {{ item.forma_suscripcion }}</h3>
+                    <p>Fecha de Registro: {{ formatearFecha(item.fecha_registro.toDate()) }}</p>                    
+                </div>  
+          </a-col>    
+      </a-row>    
+    </div>  
     <a-row>
-        <a-col :xs="{span: 24}" :sm="{span:12, offset:6}" :style="{textAlign: 'center'}">
-            <h1>SIA CLUB</h1>
-        </a-col>    
-        <a-col :xs="{span: 24}" :sm="{span:12, offset:6}" :style="{textAlign: 'center'}">
-            <ul style="list-style: none;">
-              <li v-for="item of databaseStore.registerData" :key="item.id">
-                <h2>Apellido y Nombre: {{ item.apellido }} {{ item.nombre }}</h2>
-                <h2>DNI: {{ item.dni }}</h2>
-                <h3>Forma de Suscripción: {{ item.forma_suscripcion }}</h3>
-                <p>Fecha de Registro: {{ formatearFecha(item.fecha_registro.toDate()) }}</p>
-              </li>  
-            </ul>
-
-
-            <!-- <p>{{ userStore.userData?.email }}</p> -->
-            <QRCodeVue3
-          :width="200"
-          :height="200"
+      <a-col :xs="{span: 24}" :sm="{span:24}">
+        <QRCodeVue3
+          :width="150"
+          :height="150"
           :value="generateLinkWithUserData()"
           :qrOptions="{ typeNumber: 0, mode: 'Byte', errorCorrectionLevel: 'H' }"
           :imageOptions="{ hideBackgroundDots: true, imageSize: 0.4, margin: 0 }"
@@ -40,8 +39,11 @@
           myclass="my-qur"
           imgclass="img-qr"
         />
-        </a-col>    
-    </a-row>
+      </a-col>    
+
+    </a-row>  
+
+  </body>
 </template>
 <script setup>
 import {useDatabaseStore} from '../stores/database';
@@ -57,10 +59,10 @@ const datosRegistro=ref([]);
 
 databaseStore.datodelRegistrado();
 
-//  onMounted( async() => {
-//     datosRegistro.value=await databaseStore.obtenerRegistrado();
+ onMounted( async() => {
+    datosRegistro.value=await databaseStore.obtenerRegistrado();
 
-// });
+});
 
 const generateLinkWithUserData = () => {
 
@@ -82,4 +84,17 @@ function formatearFecha(fecha) {
 
 
 </script>
-
+<style scoped>
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}  
+.centered-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+</style>

@@ -1,33 +1,10 @@
 <template>
   <body>
-
-    <!-- <a-layout :style="{ padding: 0, marginBottom: '50px'}">
-          <a-layout-header :style="{ padding: 0, marginTop: isSmallScreen ? '200px' : resolucion, marginLeft: '40px', marginRight: '40px', textAlign: 'center' }" v-if="!userStore.loadingSession">
-              <a-menu 
-                mode="horizontal"
-                v-model:selectedKeys="selectedKeys"
-
-              >
-                  <a-menu-item v-if="userStore.userData" key="home">
-                    <router-link to="/">Home</router-link>        
-                  </a-menu-item>
-                  <a-menu-item v-if="!userStore.userData" key="login">
-                    <router-link to="/login">Login</router-link>
-                  </a-menu-item>
-                  <a-menu-item v-if="!userStore.userData" key="register">
-                    <router-link to="/Register">Registrarse</router-link>
-                  </a-menu-item>
-                  <a-menu-item @click="userStore.logoutUser" v-if="userStore.userData" key="logout">Cerrar Sesion</a-menu-item>                  
-            </a-menu>  
-            </a-layout-header>
-            <a-layout-content style="padding: 0 50px"> -->
               <div class="div1"> 
-
-
                 <a-menu 
                   mode="horizontal"
                   v-model:selectedKeys="selectedKeys"
-                  :style="{ marginBottom: '50px'}"
+                  :style="{ marginBottom: '40px'}"
                 > 
                     <a-menu-item v-if="userStore.userData" key="home">
                       <router-link to="/">Home</router-link>        
@@ -40,187 +17,49 @@
                     </a-menu-item>
                     <a-menu-item @click="userStore.logoutUser" v-if="userStore.userData" key="logout">Cerrar Sesion</a-menu-item>                  
                 </a-menu>   
+              </div> 
 
                 <div v-if="userStore.loadingSession">loading user....</div> 
-                <router-view></router-view>
-              </div>
-            <!-- </a-layout-content>
-            <div class="relleno"></div>
-
-      </a-layout> -->
+                <div class="vista">
+                  <router-view></router-view>
+                </div>
+          
   </body>
 
 </template>
 <style>
-body {
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
 }
-  @media screen and (min-width: 280px) {
-  body {
-    background-image: url('./assets/credencial_blanco_280x653.jpg');
-    background-size: contain;
-  }
-  .div1 {
-    margin-top: 170px;
+body {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-image: url('./assets/768x1024_SIA_CREDENCIAL.jpg');
+  height: 100%;
+  width: 100%;
+}
+.div1 {
+    position: fixed;
+    margin-top: 125px;
     margin-right: 20px;
-    margin-left: 20px;
-    padding: 0px;
-
+    margin-left: 0px;
+    z-index: 100;
   }
-
-  }  
-  
-  @media screen and (min-width: 360px) {
-  body {
-    background-image: url('./assets/credencial_blanco_360x740.jpg');
-    background-position: center center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-
-    }
-  }  
-
-
-  @media screen and (min-width: 375px) {
-  body {
-    background-image: url('./assets/credencial_blanco_375.jpg');
-    background-position: center center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-
-    }
-  }  
-
-  @media screen and (min-width: 390px) {
-    body {
-      background-image: url('./assets/credencial_blanco_390.jpg'); 
-      background-size: contain; /* Ajustar el tamaño para pantallas pequeñas */
-      background-size: cover;
-    }
-    .div1 {
-    margin-top: 200px;
-    margin-right: 20px;
-    margin-left: 20px;
-    padding: 0px;
-    }
-  }
-
-  @media screen and (min-width: 412px) {
-    body {
-      background-image: url('./assets/credencial_blanco_412x915.jpg'); 
-      background-position: center center;
-      background-size: cover;
-    }
-    .div1 {
-    margin-top: 220px;
-    margin-right: 20px;
-    margin-left: 20px;
-    padding: 0px;
-    }
-
-  }
-
-  @media screen and (min-width: 414px) {
-    body {
-      background-image: url('./assets/credencial_blanco_414x896.jpg'); 
-      background-size: contain; /* Ajustar el tamaño para pantallas pequeñas */
-      background-size: cover;
-    }
-    .div1 {
-    margin-top: 200px;
-    margin-right: 20px;
-    margin-left: 20px;
-    padding: 0px;
-
-  }
-
-  }
-
-  @media screen and (min-width: 540px) {
-    body {
-      background-image: url('./assets/credencial_blanco_540x720.jpg'); 
-      background-size: contain; /* Ajustar el tamaño para pantallas pequeñas */
-      background-size: cover;
-    }
-  }
-
-  @media screen and (min-width: 768px) {
-    body {
-      background-image: url('./assets/credencial_blanco_768x1024.jpg'); 
-      background-size: contain; /* Ajustar el tamaño para pantallas pequeñas */
-      background-size: cover;
-    }
-    .div1 {
-    margin-top: 250px;
-    margin-right: 40px;
-    margin-left: 40px;
-    padding: 0px;
-    }
-
-  }
-
-  @media screen and (min-width: 820px) {
-    body {
-      background-image: url('./assets/credencial_blanco_820x1180.jpg'); 
-      background-size: contain; /* Ajustar el tamaño para pantallas pequeñas */
-      background-size: cover;
-    }
-    .div1 {
-    margin-top: 320px;
-    margin-right: 40px;
-    margin-left: 40px;
-    padding: 0px;
-    }
-
-  }
-  @media screen and (min-width: 912px) {
-    body {
-      background-image: url('./assets/credencial_blanco_912x1368.jpg'); 
-      background-size: contain; /* Ajustar el tamaño para pantallas pequeñas */
-      background-size: cover;
-    }
-  }
-  @media screen and (min-width: 1024px) {
-    body {
-      background-image: url('./assets/credencial_blanco_1024x600.jpg'); 
-      background-size: contain; /* Ajustar el tamaño para pantallas pequeñas */
-      background-size: cover;
-    }
-    .div1 {
-    margin-top: 150px;
-    margin-right: 40px;
-    margin-left: 40px;
-    padding: 0px;
-    }
-
-  }
-  @media screen and (min-width: 1280px) {
-    body {
-      background-image: url('./assets/credencial_blanco_1280x800.jpg'); 
-      background-size: contain; /* Ajustar el tamaño para pantallas pequeñas */
-      background-size: cover;
-    }
-    .div1 {
-    margin-top: 200px;
-    margin-right: 40px;
-    margin-left: 40px;
-    padding: 0px;
-    }
-
-  }
-
-
-/* .relleno {
-  height: 20vh;
-} */
+.vista {
+  display: block;
+  margin-top: 150px;
+  width: 350px;
+  height: 400px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
 </style>
 <script setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch } from 'vue';
 import {useUserStore} from './stores/user';
 import { useRoute } from 'vue-router';
 
@@ -228,37 +67,6 @@ const userStore=useUserStore();
 const route=useRoute();
 
 const selectedKeys=ref([''] );
-// const isSmallScreen = ref(false);
-// const resolucion=ref('');
-
-// const headerStyle = ref({
-//   padding: '0',
-//   marginTop: '100px'
-// });
-
-// if (isSmallScreen.value) {
-//   headerStyle.value.marginTop = '100px';
-// }
-
-// const checkScreenSize = () => {
-//   isSmallScreen.value = window.innerWidth < 553;
-//   let valu=parseInt(window.innerWidth)-400;
-//   resolucion.value=valu+"px";
-  
-//   console.log('Ancho de pantalla:',resolucion.value);
-// };
-
-// // Verificar tamaño de pantalla al montar el componente
-// onMounted(() => {
-//   checkScreenSize();
-//   window.addEventListener('resize', checkScreenSize);
-// });
-
-// // Remover el evento al desmontar el componente
-// onBeforeUnmount(() => {
-//   window.removeEventListener('resize', checkScreenSize);
-// });
-
 
 watch( 
   ()=> route.name, 
