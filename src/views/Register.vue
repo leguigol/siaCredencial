@@ -179,7 +179,4 @@ const onFinish=async(values)=>{
 }
 </script>
 <style scoped>
-body {
-    margin-top: 50px;
-}
 </style>

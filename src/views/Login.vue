@@ -8,7 +8,6 @@
                 layout="vertical"
                 @finish="onFinish"
                 @finishFailed="onFinishFailed"
-                style="margin-top: 30px;"
 
             >
 
