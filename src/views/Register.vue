@@ -24,6 +24,9 @@
                 :rules="[
                     {
                         required: true,
+                        min: 6,
+                        whitespace: true,
+                        message: 'Por favor ingresa una contraseña minimo 6 caracteres',
                     }
                 ]"
             >
