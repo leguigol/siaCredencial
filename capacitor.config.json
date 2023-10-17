@@ -1,0 +1,8 @@
+{
+  "appId": "credencialsia.app",
+  "appName": "CredencialSIA",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}

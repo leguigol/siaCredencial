@@ -28,6 +28,9 @@
                 <a-form-item :style="{textAlign: 'center'}">
                     <a-button type="primary" html-type="submit" :disabled="userStore.loadingUser" :style="{ width: '50%'}">Ingresar</a-button>
                 </a-form-item>
+                <a-form-item :style="{textAlign: 'center'}">
+                    <router-link to="/reset-password">Olvidé mi contraseña</router-link>
+                </a-form-item>
             </a-form>
         
         </a-col>

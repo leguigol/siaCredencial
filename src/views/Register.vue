@@ -166,10 +166,8 @@ const onFinish=async(values)=>{
     const error2=await databaseStore.registerUser(formState.suscripcion,new Date(),formState.nombre,formState.apellido,formState.dni);
     // alert('verifica tu cuenta de correo');
 
-    if(!error1){
-        return;
-    }
-    if(!error2){
+    if(!error1 && !error2){
+        await logoutUser();
         return;
     }
 

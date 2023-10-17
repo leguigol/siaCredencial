@@ -15,6 +15,9 @@
           <a-menu-item v-if="!userStore.userData" key="login">
               <router-link to="/login">Login</router-link>
           </a-menu-item>
+          <a-menu-item v-if="userStore.userData" key="Baja">
+              <router-link to="/baja">Dar de baja la cuenta</router-link>
+          </a-menu-item>
           <a-menu-item v-if="!userStore.userData" key="register">
             <router-link to="/Register">Registrarse</router-link>
           </a-menu-item>

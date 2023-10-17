@@ -3,6 +3,9 @@ import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import Editar from './views/Editar.vue';
+import Delete from './views/Delete.vue';
+import Reset from './views/Reset.vue';
+
 import {useUserStore} from './stores/user';
 
 const requireAuth=async(to, from, next) => {
@@ -20,8 +23,11 @@ const requireAuth=async(to, from, next) => {
 const routes= [
     {path: '/', component: Home, beforeEnter: requireAuth, name: 'home'},
     {path: '/editar/:id',component: Editar, beforeEnter: requireAuth, name: 'editar'},
+    {path: '/baja/',component: Delete, beforeEnter: requireAuth, name: 'baja'},
     {path: '/login', component: Login, name: 'login'},
+    {path: '/reset-password', component: Reset, name: 'reset'},
     {path: '/register', component: Register, name: 'register'},
+
 ]
 
 const router=createRouter({
