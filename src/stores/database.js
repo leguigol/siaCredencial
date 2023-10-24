@@ -1,8 +1,9 @@
 
 import { defineStore } from "pinia";
-import { collection, getDocs, query, where,addDoc, doc, getDoc,deleteDoc, updateDoc } from 'firebase/firestore/lite';
-import { db, auth } from '../firebaseConfig';
-import {nanoid} from 'nanoid'; 
+// import { collection, getDocs, getDoc, query, where,addDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore/lite';
+//import { db, auth } from '../firebaseConfig';
+import { db, auth } from '../firebase'
+import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
 import router from '../router';
 import { useUserStore } from './user';
 
@@ -13,67 +14,25 @@ export const useDatabaseStore=defineStore('database',{
         loadingDoc: false,
     }),
     actions: {
-        async getUrls(){
-
-            // if (this.documents.length!==0){
-            //     return;
-            // }
-            this.loadingDoc=true;
-            try {
-                const q = query(
-                    collection(db, 'urls'), 
-                    where("user","==", auth.currentUser.uid)
-                );
-                const querySnapshot=await getDocs(q);
-                querySnapshot.forEach((doc) => {
-                    console.log(doc.id,doc.data());
-                    this.documents.push({
-                        id: doc.id,
-                        ...doc.data(),
-                    });
-                });
-            }catch(error){
-                console.log(error);
-            }finally{
-                this.loadingDoc=false;
-            }
-        }, 
- 
-        async addUrl(name){
-            try{
-                const objetoDoc={
-                    name: name,
-                    short: nanoid(6),
-                    user: auth.currentUser.uid
-                }
-                const docRef=await addDoc(collection(db, "urls"), objetoDoc);
-                this.documents.push({
-                    ...objetoDoc,
-                    id: docRef.id,
-                });
-            }catch(error){
-                console.log(error);
-            }finally{
-
-            }
-        },
         async datodelRegistrado(){
             try{
+
+                // console.log('entre')
                 this.registerData=[];
+
                 const q = query(
                     collection(db, 'registro'), 
                     where("user","==", auth.currentUser.uid)
                 );
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    console.log(doc.id, " => ", doc.data());
+                    console.log("__" ,doc.id, " => ", doc.data());
                     this.registerData.push({ id: doc.id,
                         ...doc.data(),
                     });
-                  });
+                });
             }catch(error){
-
+                console.log(error);
             }finally{
 
             }
@@ -85,32 +44,49 @@ export const useDatabaseStore=defineStore('database',{
                     collection(db, 'registro'), 
                     where("user","==", auth.currentUser.uid)
               );
+
               const querySnapshot=await getDocs(q);
-              console.log('uid: '+auth.currentUser.uid)  
-              if(!querySnapshot.empty){
-                const docS=querySnapshot.docs[0];
-                const data=docS.data();
-                // Devolver los datos de registro
-                return {
-                    forma_suscripcion: data.forma_suscripcion,
-                    fecha_registro: data.fecha_registro,
-                    nombre: data.nombre,
-                    apellido: data.apellido,
-                    dni: data.dni
-                  };
-    
-              }else{
-                console.log('no hay datos de registro');
-                return null;
-              }  
+              console.log('query: '+querySnapshot.docs);
+
+              querySnapshot.forEach((doc) => {
+                const docData = doc.data();
+                console.log('Data del documento:', docData); 
+                data.push({
+                  forma_suscripcion: docData.forma_suscripcion,
+                  fecha_registro: docData.fecha_registro,
+                  nombre: docData.nombre,
+                  apellido: docData.apellido,
+                  dni: docData.dni
+                });
+              });
+
+                // if(!querySnapshot.empty){
+                //     const data = [];
+                //     querySnapshot.forEach((doc) => {
+                //         const docData = doc.data();
+                //         data.push({
+                //             forma_suscripcion: docData.forma_suscripcion,
+                //             fecha_registro: docData.fecha_registro,
+                //             nombre: docData.nombre,
+                //             apellido: docData.apellido,
+                //             dni: docData.dni
+                //         });
+                //     });
+                //     this.registerData=data;
+                //     return data;
+                // }else{
+                //     console.log('no hay datos de registro');
+                //     return null;
+                // }  
         
             } catch (error) {
               console.log(error.message);
             }
         },        
-        async registerUser(suscrip,fecha,nom,ape,docu){
+        async registerUser(xid,suscrip,fecha,nom,ape,docu){
             const userStore=useUserStore();
-            const xid=userStore.userData.uid;
+
+            console.log('el id es: ',xid);    
             try{
                 const objetoDoc={
                     user: xid,
@@ -120,11 +96,12 @@ export const useDatabaseStore=defineStore('database',{
                     apellido: ape,
                     dni: docu                    
                 }
+
+                console.log("objeto:",objetoDoc)
                 await addDoc(collection(db, "registro"), objetoDoc);
-                
                 router.push('/');
             }catch(error){
-                console.log(error.code);
+                console.log(error);
                 return(error.code);
             }finally{
 

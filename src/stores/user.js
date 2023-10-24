@@ -1,14 +1,15 @@
 import {defineStore} from 'pinia';
-import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from 'firebase/auth';
 import {auth, db} from '../firebaseConfig';
-import router from '../router';
 import {useDatabaseStore} from './database';
+import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from 'firebase/auth';
 import { query, getDocs,collection,where} from 'firebase/firestore/lite';
+import router from '../router';
 import { message } from 'ant-design-vue';
 
 export const useUserStore=defineStore('userStore',{
     state: () =>  ({
         userData: null,
+        registerData: null,
         loadingUser: false,
         loadingSession: false,
     }),
@@ -20,7 +21,8 @@ export const useUserStore=defineStore('userStore',{
                 console.log(user);
                 // this.userData={email: user.email, uid: user.uid};
                 this.userData={email: user.email, uid: user.uid };
-                router.push('/');
+                // this.logoutUser();
+                // router.push('/');
             }catch (error){
                 console.log(error);
                 return(error.code);
@@ -36,7 +38,7 @@ export const useUserStore=defineStore('userStore',{
                 this.userData={ email: user.email, uid: user.uid}; 
                 router.push('/');
             }catch(error){
-                console.log(error.code);            
+                console.log(error);            
                 return(error.code);
             }finally{
                 this.loadingUser=false;
@@ -49,6 +51,7 @@ export const useUserStore=defineStore('userStore',{
             try{
                 this.userData=null;
                 await signOut(auth);
+                databasestore.$reset();                                    
                 router.push('/login');
             }catch(error){
                 console.log(error);

@@ -48,19 +48,20 @@
 <script setup>
 import {useDatabaseStore} from '../stores/database';
 import { ref, onMounted } from 'vue';
-// import { useRouter} from 'vue-router';
-// import QRCode from 'qrcode';
 import { auth } from '../firebaseConfig';
 import QRCodeVue3 from "qrcode-vue3";
 
-
 const databaseStore=useDatabaseStore();
+
 const datosRegistro=ref([]);
 
-databaseStore.datodelRegistrado();
+//databaseStore.obtenerRegistrado();
+//databaseStore.datodelRegistrado();
 
- onMounted( async() => {
-    datosRegistro.value=await databaseStore.obtenerRegistrado();
+onMounted( async() => {
+    
+  datosRegistro.value=databaseStore.datodelRegistrado();
+  console.log(datosRegistro.value);
 
 });
 
@@ -68,7 +69,7 @@ const generateLinkWithUserData = () => {
 
 //   const userData=JSON.stringify(auth.currentUser.uid)   ;
   const userData=auth.currentUser.uid;
-  const link = 'https://silver-cobbler-d5eb3c.netlify.app/?id=';
+  const link = 'https://credencialsialector.netlify.app/?id=';
 
   return `${link}${userData}`;
 };

@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import {useUserStore} from '../stores/user';
 import { message } from 'ant-design-vue';
 
@@ -50,8 +50,9 @@ const formState=reactive({
     password: '',
 });
 
-
-const onFinish=async(values) => {
+onMounted(()=>{
+})
+const onFinish=async() => {
 
     const error=await userStore.loginUser(formState.email,formState.password);
     

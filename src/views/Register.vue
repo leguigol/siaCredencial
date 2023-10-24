@@ -131,12 +131,13 @@
 import { reactive } from 'vue';
 import {useUserStore} from '../stores/user';
 import { useDatabaseStore } from '../stores/database';
-// import {useRouter} from 'vue-router';
+import {useRouter} from 'vue-router';
 import { message } from 'ant-design-vue';
 
 const userStore=useUserStore();
 const databaseStore=useDatabaseStore();
- 
+const router = useRouter();
+
 const formState= reactive({
     email: "",
     password: "",
@@ -163,11 +164,11 @@ const onFinish=async(values)=>{
     
     const error1=await userStore.registerUser(formState.email,formState.password);
 
-    const error2=await databaseStore.registerUser(formState.suscripcion,new Date(),formState.nombre,formState.apellido,formState.dni);
-    // alert('verifica tu cuenta de correo');
+    console.log("data:",userStore.userData)
+    const id=userStore.userData["uid"];
+    const error2=await databaseStore.registerUser(id,formState.suscripcion,new Date(),formState.nombre,formState.apellido,formState.dni);
 
     if(!error1 && !error2){
-        await logoutUser();
         return;
     }
 

@@ -26,7 +26,8 @@
     "vue": "^3.3.4",
     "vue-qr": "^4.0.9",
     "vue-qrcode-component": "^2.1.1",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue-sweetalert2": "^5.0.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

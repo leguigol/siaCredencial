@@ -28,6 +28,10 @@ const handlePasswordReset = async () => {
       Swal.fire('¡Contraseña restablecida!', 'Verifique su correo electronico!.', 'success');      
     })
     .catch((error) => {
+      if (error.code === 'auth/user-not-found') {
+        Swal.fire('Email no registrado !','Verifique');
+      }
+      console.log(error)  
     });
   } catch (error) {
     console.error('Error al enviar el correo de recuperación:', error);
