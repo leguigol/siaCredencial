@@ -15,14 +15,11 @@ export const useUserStore=defineStore('userStore',{
     }),
     actions: {
         async registerUser(email,password){
-            this.loginUser=true;
+            this.loadingUser=true;
             try {
                 const {user}=await createUserWithEmailAndPassword(auth, email, password)
                 console.log(user);
-                // this.userData={email: user.email, uid: user.uid};
                 this.userData={email: user.email, uid: user.uid };
-                // this.logoutUser();
-                // router.push('/');
             }catch (error){
                 console.log(error);
                 return(error.code);
@@ -45,18 +42,15 @@ export const useUserStore=defineStore('userStore',{
             }
         },
         async logoutUser(){
-            this.loadingUser=true;
-            const databasestore=useDatabaseStore();
-            databasestore.$reset();
+            this.loadingSession=true;
             try{
-                this.userData=null;
                 await signOut(auth);
-                databasestore.$reset();                                    
-                router.push('/login');
             }catch(error){
                 console.log(error);
             }finally{
-                this.loadingUser=false;
+                this.userData=null;
+                this.loadingSession=false;
+                router.push('/login');
             }
         }, 
         currentUser(){

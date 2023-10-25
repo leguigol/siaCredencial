@@ -15,6 +15,7 @@ import { collection, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../Firebase';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/user';
+import Swal from 'sweetalert2';
 
 const id=ref('');
 const email=ref('')
@@ -37,6 +38,7 @@ const dardeBaja= id => {
     user.delete().then(() => {
         console.log('user Deleted: '+id)
         userStore.logoutUser();
+        Swal.fire('¡Cuenta borrada!','success');      
         router.push('/')
             
 }).catch((error) => {
