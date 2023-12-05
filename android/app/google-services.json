@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "55510330806",
+    "project_id": "credencialsia",
+    "storage_bucket": "credencialsia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55510330806:android:713ad799d113536b4ca517",
+        "android_client_info": {
+          "package_name": "credencialsia.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55510330806-9brffe46fk3na919entg8071mbcjf0tp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF2gc-RAqQIDg02kUkuSvW6rxJ4jLNS5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55510330806-9brffe46fk3na919entg8071mbcjf0tp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

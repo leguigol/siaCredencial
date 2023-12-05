@@ -12,7 +12,7 @@
 import { ref, onMounted } from 'vue';
 import { auth } from '../firebaseConfig';
 import { collection, deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../Firebase';
+import { db } from '../firebase';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/user';
 import Swal from 'sweetalert2';
