@@ -29,7 +29,6 @@ export const useUserStore=defineStore('userStore',{
         },
         async loginUser(email, password){
             this.loadingUser=true;
-
             try{
                 const {user}=await signInWithEmailAndPassword(auth,email,password);
                 this.userData={ email: user.email, uid: user.uid}; 
